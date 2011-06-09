@@ -35,7 +35,7 @@ class Client(object):
             base = self.build_full_url(target, params)
         else:
             base = self.build_full_url(target)
-            body = urllib.urlencode(params)
+            body = self._urlencode(params)
         
         resp, content = client.request(base, method=method, body=body)
         
@@ -57,9 +57,19 @@ class Client(object):
         target_path = urllib2.quote(url)
         
         if params:
-            return "/api/%s%s?%s" % (API_VERSION, target_path, urllib.urlencode(params))
+            return "/api/%s%s?%s" % (API_VERSION, target_path, self._urlencode(params))
         else:
             return "/api/%s%s" % (API_VERSION, target_path)
+
+    def _urlencode(self, params):
+        p = []
+        for key, value in params.iteritems():
+            if isinstance(value, (list, tuple)):
+                for v in value:
+                    p.append((key+'[]', v))
+            else:
+                p.append((key, value))
+        return urllib.urlencode(p)
 
 
 class UserClient(Client):
