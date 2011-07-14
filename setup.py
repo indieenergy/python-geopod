@@ -16,7 +16,7 @@ def read(fname):
     
 setup(
     name="python-geopod",
-    version="0.0.2",
+    version="0.0.3",
     author="Michael Yagley",
     description="A client for the Indie Energy Systems Geopod API",
     packages=["geopod",],
